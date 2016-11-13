@@ -34,7 +34,7 @@ public class Boid extends Circle {
 		int state = rand.nextInt(2);
 		
 		if (state == 1) num*=-1;
-		System.out.println("state: " + state);
+//		System.out.println("state: " + state);
 		this.setDx(num);
 		
 		num = rand.nextInt(4)+1;

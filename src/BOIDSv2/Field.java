@@ -16,7 +16,7 @@ import javafx.util.Duration;
 public class Field extends Application {
 
 	int p = 0;
-	int width = 600, height = 1200;
+	int width = 600, height = 600;
 	double x = 100, y = 100, z = 5, dx = 0f, dy = 0f, px = 0, py = 0, vx = 0, vy = 0;
 	ArrayList<Boid> boids = new ArrayList<Boid>();
 	ArrayList<Boid> proximityArray = new ArrayList<Boid>();
@@ -46,11 +46,12 @@ public class Field extends Application {
 
 			if (!other.equals(b)) {
 
-				boolean xClose = Math.abs(b.getCenterX())
-						- (other.getCenterX()) < 50;
-				boolean yClose = Math.abs(b.getCenterY())
-						- (other.getCenterY()) < 50;
-
+				boolean xClose = Math.abs(other.getCenterX())
+						- (b.getCenterX()) < 50;
+				
+				boolean yClose = Math.abs(other.getCenterY())
+						- (b.getCenterY()) < 50;
+//				System.out.println(xClose + " - " + yClose);
 				if (xClose && yClose) {
 					proximityArray.add(other);
 					centreMassX = (centreMassX + other.getCenterX());
@@ -66,11 +67,12 @@ public class Field extends Application {
 
 						
 		}
-		
-		vector1x = (centreMassX - (b.getCenterX())) / 1000;
-		vector1y = (centreMassY - (b.getCenterY())) / 1000;
-		System.out.println("v1x = " + vector1x + ", v1y = " + vector1y);
-		
+		if (proximityArray.size() != 0) {
+		vector1x = (centreMassX - (b.getCenterX())) / 5000;
+		vector1y = (centreMassY - (b.getCenterY())) / 5000;
+		}
+	//	System.out.println("v1x = " + vector1x + ", v1y = " + vector1y);
+//		System.out.println(proximityArray.size());
 		proximityArray.clear();
 	}
 
@@ -99,8 +101,8 @@ public class Field extends Application {
 							- ((other.getCenterY()) - (b.getCenterY()));
 
 				}
-				vectorX *= 0.00001;
-				vectorY *= 0.00001;
+				vectorX *= 0.0001;
+				vectorY *= 0.0001;
 
 			}
 		}
@@ -108,7 +110,7 @@ public class Field extends Application {
 		vector2x = vectorX;
 		vector2y = vectorY;
 		
-		System.out.println("v2x = " + vector2x + ", v2y = " + vector2y);
+	//	System.out.println("v2x = " + vector2x + ", v2y = " + vector2y);
 	}
 
 	// rule for adjusting speed to match nearby boids
@@ -144,7 +146,7 @@ public class Field extends Application {
 
 		vector3x = (boidDX - b.getDx()) / 8;
 		vector3y = (boidDY - b.getDy()) / 8;
-		System.out.println("v1x = " + vector1x + ", v1y = " + vector1y);
+	//	System.out.println("v1x = " + vector1x + ", v1y = " + vector1y);
 		proximityArray.clear();
 	}
 
@@ -327,15 +329,15 @@ public class Field extends Application {
 			// call each rule on boid
 			
 			rule1(boid);			
-			rule2(boid);			
+	//		rule2(boid);			
 //			rule3(boid);
 			boid.setDx(boid.getDx() + vector1x + vector2x + vector3x);
 			boid.setDy(boid.getDy() + vector1y + vector2y + vector3y);
 			limitSpeed(boid);
-			fixedRebound(boid);
+//			fixedRebound(boid);
 //			alternateRebound(boid);
 //			newRebound(boid);
-//			newFixedRebound(boid);
+			newFixedRebound(boid);
 //			teleport(boid);
 			
 			boid.setCenterX(boid.getCenterX() + boid.getDx());
@@ -421,7 +423,7 @@ public class Field extends Application {
 
 		Group root = new Group();
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 15; i++) {
 
 			x = rand.nextInt(width-100) + 100;
 			y = rand.nextInt(height-100) + 100;
